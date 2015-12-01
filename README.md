@@ -1,2 +1,12 @@
 # ircbotjs
 IRC bot written in nodejs
+
+Installation
+===========
+
+On Ubuntu/Debian, should work on other Linux distributions with small changes
+
+1. install nodejs (`curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - && sudo apt-get install -y nodejs`)
+2. optionally, install libicu (`sudo apt-get install libicu-dev`). It's used to perform character set recogniton, if not installed will give a warning in the next step but overall the bot will work
+3. install the dependencies with `npm install`
+4. run with `npm start` or `node index.js` or forever/pm2 as you wish
