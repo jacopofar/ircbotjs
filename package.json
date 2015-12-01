@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jacopofar/ircbotjs#readme",
   "dependencies": {
-    "irc": "^0.4.0"
+    "irc": "^0.4.0",
+    "nconf": "^0.8.2"
   }
 }
