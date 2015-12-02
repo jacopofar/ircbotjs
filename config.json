@@ -7,4 +7,4 @@
 "irc_server_password":"your_password",
 "irc_channels":["#IrcBotJS"],
 "script_directory":"scripts"
-}
+} 

@@ -37,4 +37,4 @@ fs.readdir(nconf.get('script_directory'),function(err,files){
 
 client.addListener('error', function(message) {
   console.log('error: ', message);
-});
+}); 
