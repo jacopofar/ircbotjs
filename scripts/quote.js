@@ -22,9 +22,25 @@ module.exports.main = function(client){
 
       var ind = Math.floor(Math.random()*quotearray.length);
       client.say(to,quotearray[ind]);
-      console.log("requested a random quote by "+nick+"picked number "+ind+" which is "+quotearray[ind]);
+      console.log("requested a random quote by "+nick+", picked number "+ind+" which is "+quotearray[ind]);
       return;
     }
+
+    if(text.indexOf('!quote') === 0){
+      var searchKey = text.replace('!quote ','');
+      var filtered = quotearray.filter(q => q.indexOf(searchKey) !== -1);
+      if(filtered.length === 0){
+        client.say(to,"no quotes found with the given key, "+searchKey);
+        return;
+      }
+
+      var ind = Math.floor(Math.random()*filtered.length);
+      client.say(to,filtered[ind]);
+      console.log("requested a random filtered quote by "+nick+", for "+searchKey+"  picked number "+ind+" which is "+filtered[ind]);
+      return;
+    }
+
+
     if(text.indexOf('!addquote') === 0){
       var thisQuote = text.replace('!addquote ','');
       quotearray.push(thisQuote);
@@ -37,8 +53,6 @@ module.exports.main = function(client){
         client.say(to,"succesfully added the quote number "+quotearray.length);
         return;
       });
-
-
     }
   });
 };
