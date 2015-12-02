@@ -23,7 +23,7 @@ fs.readdir(nconf.get('script_directory'),function(err,files){
       if (!fstat.isDirectory()){
         var thisModule = require(path.resolve(path.join('.',nconf.get('script_directory'),fileName)));
         thisModule.main(client);
-        console.log("running "+fileName);
+        console.log("found module "+fileName+(thisModule.description?(" ("+thisModule.description+")"):""));
       }
     });
   });
