@@ -9,8 +9,14 @@ nconf.argv()
 .file({ file: 'config.json' })
 .defaults({script_directory:'scripts'});
 
-var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_username'), {
-  channels: nconf.get('irc_channels'),
+var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_nickname'), {
+
+	userName: nconf.get('irc_username'),
+	realName: nconf.get('irc_realname'),
+	port: nconf.get('irc_server_port'),
+	channels: nconf.get('irc_channels'),
+	sasl: nconf.get('sasl'),
+	password: nconf.get('irc_server_password'),
 });
 
 fs.readdir(nconf.get('script_directory'),function(err,files){
@@ -31,5 +37,4 @@ fs.readdir(nconf.get('script_directory'),function(err,files){
 
 client.addListener('error', function(message) {
   console.log('error: ', message);
-});
-
+}); 
