@@ -32,8 +32,17 @@ module.exports.main = function(client){
       var searchUser = text.replace('!seen ','').trim();
       var lastDate = lastSeen[searchUser];
       if(!lastDate){
-        client.say(to,'sorry, that user was not cool enough to visit this channel while this bot was running');
-        return;
+        var containing = Object.keys(lastSeen).filter(u => u.toLowerCase().indexOf(searchUser.toLowerCase()) !== -1);
+        if(containing.length === 0){
+          client.say(to,'sorry, that user was not cool enough to visit this channel while this bot was running');
+          return;
+        }
+        if(containing.length < 5){
+          client.say(to,'sorry, that user was not cool enough to visit this channel while this bot was running, but I have seen these users: '+containing.join(' '));
+          return;
+        }
+        client.say(to,'sorry, that user was not cool enough to visit this channel while this bot was running, and I have seen '+containing.length+' users containing '+searchUser.toUpperCase()+' in the nickname');
+
       }
       var span = moment(lastDate).fromNow(); 
       client.say(to,"the user "+searchUser+" was seen "+span);
