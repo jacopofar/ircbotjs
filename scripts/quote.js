@@ -27,8 +27,8 @@ module.exports.main = function(client){
     }
 
     if(text.indexOf('!quote') === 0){
-      var searchKey = text.replace('!quote ','');
-      var filtered = quotearray.filter(q => q.indexOf(searchKey) !== -1);
+      var searchKey = text.replace('!quote ','').toLowerCase().replace(/\*/g,'');
+      var filtered = quotearray.filter(q => q.toLowerCase().replace(/\*/g,'').indexOf(searchKey) !== -1);
       if(filtered.length === 0){
         client.say(to,"no quotes found with the given key, "+searchKey);
         return;
