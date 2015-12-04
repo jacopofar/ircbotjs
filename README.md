@@ -20,4 +20,8 @@ Usage
 Write a module
 ==============
 
-Still to be defined, for now see the existing modules for an example but they ar elikely to change
+Still to be fully defined, however all of the .js files in the *scripts* folder are loaded as node modules, so you have to write one and export the main function:
+
+`module.exports = function(client){...}`
+
+the client is the client object of node-IRC, see the doc for its usage: https://node-irc.readthedocs.org/en/latest/API.html#events
