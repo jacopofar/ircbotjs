@@ -5,7 +5,7 @@ var nconf = require('nconf');
 var path = require('path');
 
   nconf.argv()
-.env()
+  .env()
   .file({ file: 'config.json' })
   .defaults({script_directory:'scripts',
     sasl:false,
@@ -14,6 +14,17 @@ var path = require('path');
     irc_username:''
   });
 
+if(!nconf.get('irc_nickname')){
+  console.error("irc_nickname is not defined, exiting!");
+  process.exit(1);
+}
+
+if(!nconf.get('irc_server')){
+  console.error("irc_server is not defined, exiting!");
+  process.exit(1);
+}
+
+
 var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_nickname'), {
   userName: nconf.get('irc_username'),
   realName: nconf.get('irc_realname'),
@@ -21,6 +32,10 @@ var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_nickname'), 
   channels: nconf.get('irc_channels'),
   sasl: nconf.get('sasl'),
   password: nconf.get('irc_server_password'),
+});
+
+client.addListener('error', function(message) {
+  console.log('IRC error: ', message);
 });
 
 fs.readdir(nconf.get('script_directory'),function(err,files){
