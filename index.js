@@ -11,7 +11,7 @@ var path = require('path');
     sasl:false,
     irc_server_password:'',
     irc_realname:'ircbotjs',
-    irc_username:''
+    irc_username:'ircbotjs',
   });
 
 if(!nconf.get('irc_nickname')){
