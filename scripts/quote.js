@@ -10,7 +10,7 @@ fs.readFile('quotes.txt', 'utf8', function(err, data) {
     console.log("found "+quotearray.length+" quotes");
 });
 
-module.exports.description = "Store and retrieve quotes from a file";
+module.exports.description = "Store and retrieve quotes, use !quote and !addquote";
 
 module.exports.main = function(client){
   client.addListener('message#', function(nick,to,text,message) {

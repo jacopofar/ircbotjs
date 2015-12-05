@@ -1,7 +1,7 @@
 'use strict';
 var mathjs = require('mathjs');
 
-module.exports.description = "Calculate arithmetical expressions using math.js";
+module.exports.description = "Calculate arithmetical expressions using math.js, try !calc command";
 
 module.exports.main = function(client){
   client.addListener('message#', function(nick,to,text,message) {

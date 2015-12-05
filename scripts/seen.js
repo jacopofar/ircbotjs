@@ -18,7 +18,7 @@ fs.readFile('seen_users.json', 'utf8', function(err, data) {
   }
 });
 
-module.exports.description = "Tells the last time a user was seen using !seen username";
+module.exports.description = "Tells the last time a user was active using !seen username";
 
 module.exports.main = function(client){
   client.addListener('message#', function(nick,to,text,message) {
