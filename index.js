@@ -38,6 +38,9 @@ client.addListener('error', function(message) {
   console.log('IRC error: ', message);
 });
 
+//descriptions of the modules having one (that is, module.exports.description)
+var visible_modules = [];
+
 fs.readdir(nconf.get('script_directory'),function(err,files){
   files.forEach(fileName => {
 
@@ -48,10 +51,27 @@ fs.readdir(nconf.get('script_directory'),function(err,files){
       if (!fstat.isDirectory()){
         var thisModule = require(path.resolve(path.join('.',nconf.get('script_directory'),fileName)));
         thisModule.main(client);
-        console.log("found module "+fileName+(thisModule.description?(" ("+thisModule.description+")"):""));
+        if(thisModule.description){
+          visible_modules.push(fileName+" "+thisModule.description); 
+          console.log("found module "+fileName+" ("+thisModule.description+")");
+        }
+        else{
+          console.log("found module without description "+fileName);
+        }
       }
     });
   });
+});
+
+client.addListener('message#', function(nick,to,text,message) {
+  if(text === '!help'){
+    client.say(to,visible_modules.length+" modules visible:");
+    visible_modules.forEach((m,i) => {
+      setTimeout(() =>{
+      client.say(to," * "+m);
+      },600*i);
+    });
+  }
 });
 
 client.addListener('error', function(message) {
