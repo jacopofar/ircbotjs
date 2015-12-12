@@ -42,7 +42,11 @@ module.exports.main = function(client){
 
 
     if(text.indexOf('!addquote') === 0){
-      var thisQuote = text.replace('!addquote ','');
+      var thisQuote = text.replace('!addquote ','').trim();
+      if(thisQuote.length < 5){
+          client.say(to,nick+", I don't think that's a real quote");
+          return;
+      }
       quotearray.push(thisQuote);
       fs.appendFile('quotes.txt', thisQuote+'\n', function (err) {
         if(err){
