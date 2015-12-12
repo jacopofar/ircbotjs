@@ -1,5 +1,7 @@
 'use strict';
 var fs = require('fs');
+var levenshtein = require('levenshtein');
+
 var quotearray = [];
 fs.readFile('quotes.txt', 'utf8', function(err, data) {
     if (err){
@@ -45,6 +47,13 @@ module.exports.main = function(client){
       var thisQuote = text.replace('!addquote ','').trim();
       if(thisQuote.length < 5){
           client.say(to,nick+", I don't think that's a real quote");
+          return;
+      }
+      var tooSimilar = quotearray.filter(q => {
+          return (new levenshtein(q,thisQuote).distance) < (thisQuote.length/3);
+      });
+      if (tooSimilar.length > 0){
+          client.say(to,nick+", sorry, that quote was too similar to this existing one: "+tooSimilar[0]);
           return;
       }
       quotearray.push(thisQuote);
