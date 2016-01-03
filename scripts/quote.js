@@ -44,7 +44,7 @@ module.exports.main = function(client){
 
 
     if(text.indexOf('!addquote') === 0){
-      var thisQuote = text.replace('!addquote ','').trim();
+      var thisQuote = text.replace('!addquote','').trim();
       if(thisQuote.length < 5){
           client.say(to,nick+", I don't think that's a real quote");
           return;
@@ -56,6 +56,7 @@ module.exports.main = function(client){
           client.say(to,nick+", sorry, that quote was too similar to this existing one: "+tooSimilar[0]);
           return;
       }
+      thisQuote = thisQuote+ " (added by "+nick+" on "+new Date().toISOString().substr(0,10)+")"
       quotearray.push(thisQuote);
       fs.appendFile('quotes.txt', thisQuote+'\n', function (err) {
         if(err){
