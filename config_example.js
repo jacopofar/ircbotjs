@@ -3,7 +3,7 @@
   "irc_username":"IrcBotJS",
   "irc_realname":"IrcBotJS",
   "irc_server_port":"6667",
-  "sasl":"false",
+  "sasl":false,
   "irc_server_password":"your_password",
   "irc_channels":["#IrcBotJS"],
   "script_directory":"scripts"
