@@ -16,21 +16,25 @@ module.exports.main = function(irc_client){
       }
       for(let u of urls){
         console.log('analyzing URL ' + u);
-        let client = new MetaInspector(u, { timeout: 5000, limit: 1024*1024*1 });
-        client.on("fetch", function(){
-          console.log('fetched ' + u + ' -- ' + client);
-          let shortDes = client.title;
-          if (client.author) shortDes += ' by ' + client.author;
-          if (client.description) shortDes += ' ' + client.description.substr(0,100) + '...';
-          irc_client.say(to, shortDes + ' - ' + u + ' [otr]');
-        });
+        let client = new MetaInspector(u, { timeout: 5000,
+          limit: 1024*1024*1,
+          headers: {
+            'User-Agent': 'ircbotjs - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0'
+          } });
+          client.on("fetch", function(){
+            console.log('fetched ' + u + ' -- ' + client);
+            let shortDes = client.title;
+            if (client.author) shortDes += ' by ' + client.author;
+            if (client.description) shortDes += ' ' + client.description.substr(0,100) + '...';
+            irc_client.say(to, shortDes + ' - ' + u + ' [otr]');
+          });
 
-        client.on("error", function(err){
-          console.log('error: ', err)
-          irc_client.say(to, err);
-        });
-        client.fetch();
+          client.on("error", function(err){
+            console.log('error: ', err)
+            irc_client.say(to, err);
+          });
+          client.fetch();
+        }
       }
-    }
-  });
-};
+    });
+  };
