@@ -19,7 +19,10 @@ module.exports.main = function(irc_client){
         let client = new MetaInspector(u, { timeout: 5000, limit: 1024*1024*1 });
         client.on("fetch", function(){
           console.log('fetched ' + u + ' -- ' + client);
-          irc_client.say(to, client.title + ' - ' + u);
+          let shortDes = client.title;
+          if (client.author) shortDes += ' by ' + client.author;
+          if (client.description) shortDes += ' ' + client.description.substr(0,100) + '...';
+          irc_client.say(to, shortDes + ' - ' + u + ' [otr]');
         });
 
         client.on("error", function(err){
