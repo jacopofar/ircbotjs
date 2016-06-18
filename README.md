@@ -20,8 +20,12 @@ Usage
 Write a module
 ==============
 
-Still to be fully defined, however all of the .js files in the *scripts* folder are loaded as node modules, so you have to write one and export the main function:
+All of the .js files in the *scripts* folder are loaded as node modules, so you have to write one and export the main function:
 
 `module.exports = function(client){...}`
 
 the client is the client object of node-IRC, see the doc for its usage: https://node-irc.readthedocs.org/en/latest/API.html#events
+
+Exporting the `description` field will cause the module to be seen using the command `!help`, with that description.
+
+

@@ -18,12 +18,11 @@ fs.readFile('seen_users.json', 'utf8', function(err, data) {
   }
 });
 
-module.exports.description = "Tells the last time a user was seen using !seen username";
+module.exports.description = "Tells the last time a user was active using !seen username";
 
 module.exports.main = function(client){
   client.addListener('message#', function(nick,to,text,message) {
     //update the user last action date in any case
-    lastSeen[nick] = new Date().toISOString();
     if(text === '!seen'){
       client.say(to,"usage !seen username");
       return;
@@ -42,12 +41,13 @@ module.exports.main = function(client){
           return;
         }
         client.say(to,'sorry, that user was not cool enough to visit this channel while this bot was running, and I have seen '+containing.length+' users containing '+searchUser.toUpperCase()+' in the nickname');
-
       }
       var span = moment(lastDate).fromNow(); 
       client.say(to,"the user "+searchUser+" was seen "+span);
       return;
     }
+    lastSeen[nick] = new Date().toISOString();
+
   });
 
   client.addListener('join',function(channel, nick, message){

@@ -5,7 +5,7 @@ var nconf = require('nconf');
 var path = require('path');
 
   nconf.argv()
-.env()
+  .env()
   .file({ file: 'config.json' })
   .defaults({script_directory:'scripts',
     sasl:false,
@@ -13,6 +13,17 @@ var path = require('path');
     irc_realname:'ircbotjs',
     irc_username:'ircbotjs',
   });
+
+if(!nconf.get('irc_nickname')){
+  console.error("irc_nickname is not defined, exiting!");
+  process.exit(1);
+}
+
+if(!nconf.get('irc_server')){
+  console.error("irc_server is not defined, exiting!");
+  process.exit(1);
+}
+
 
 var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_nickname'), {
   userName: nconf.get('irc_username'),
@@ -22,6 +33,13 @@ var client = new irc.Client(nconf.get('irc_server'), nconf.get('irc_nickname'), 
   sasl: nconf.get('sasl'),
   password: nconf.get('irc_server_password'),
 });
+
+client.addListener('error', function(message) {
+  console.log('IRC error: ', message);
+});
+
+//descriptions of the modules having one (that is, module.exports.description)
+var visible_modules = [];
 
 fs.readdir(nconf.get('script_directory'),function(err,files){
   files.forEach(fileName => {
@@ -33,10 +51,27 @@ fs.readdir(nconf.get('script_directory'),function(err,files){
       if (!fstat.isDirectory()){
         var thisModule = require(path.resolve(path.join('.',nconf.get('script_directory'),fileName)));
         thisModule.main(client);
-        console.log("found module "+fileName+(thisModule.description?(" ("+thisModule.description+")"):""));
+        if(thisModule.description){
+          visible_modules.push(fileName+" "+thisModule.description); 
+          console.log("found module "+fileName+" ("+thisModule.description+")");
+        }
+        else{
+          console.log("found module without description "+fileName);
+        }
       }
     });
   });
+});
+
+client.addListener('message#', function(nick,to,text,message) {
+  if(text === '!help'){
+    client.say(to,visible_modules.length+" modules visible:");
+    visible_modules.forEach((m,i) => {
+      setTimeout(() =>{
+      client.say(to," * "+m);
+      },600*i);
+    });
+  }
 });
 
 client.addListener('error', function(message) {

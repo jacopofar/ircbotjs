@@ -1,5 +1,7 @@
 'use strict';
 var fs = require('fs');
+var levenshtein = require('levenshtein');
+
 var quotearray = [];
 fs.readFile('quotes.txt', 'utf8', function(err, data) {
     if (err){
@@ -10,7 +12,7 @@ fs.readFile('quotes.txt', 'utf8', function(err, data) {
     console.log("found "+quotearray.length+" quotes");
 });
 
-module.exports.description = "Store and retrieve quotes from a file";
+module.exports.description = "Store and retrieve quotes, use !quote and !addquote";
 
 module.exports.main = function(client){
   client.addListener('message#', function(nick,to,text,message) {
@@ -42,7 +44,19 @@ module.exports.main = function(client){
 
 
     if(text.indexOf('!addquote') === 0){
-      var thisQuote = text.replace('!addquote ','');
+      var thisQuote = text.replace('!addquote','').trim();
+      if(thisQuote.length < 5){
+          client.say(to,nick+", I don't think that's a real quote");
+          return;
+      }
+      var tooSimilar = quotearray.filter(q => {
+          return (new levenshtein(q,thisQuote).distance) < (thisQuote.length/3);
+      });
+      if (tooSimilar.length > 0){
+          client.say(to,nick+", sorry, that quote was too similar to this existing one: "+tooSimilar[0]);
+          return;
+      }
+      thisQuote = thisQuote+ " (added by "+nick+" on "+new Date().toISOString().substr(0,10)+")"
       quotearray.push(thisQuote);
       fs.appendFile('quotes.txt', thisQuote+'\n', function (err) {
         if(err){
