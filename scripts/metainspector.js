@@ -1,5 +1,4 @@
 'use strict';
-/* module built by github.com/sempiternum */
 
 const MetaInspector = require('node-metainspector');
 
