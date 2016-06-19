@@ -14,6 +14,10 @@ module.exports.main = function(irc_client){
         return;
       }
       for(let u of urls){
+        if (u.match(/.(jpg|png)$/i) !== null){
+          console.log('skipping the image URL ' + u);
+          continue;
+        }
         console.log('analyzing URL ' + u);
         let client = new MetaInspector(u, { timeout: 5000,
           limit: 1024*1024*1,
