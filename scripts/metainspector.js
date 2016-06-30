@@ -29,12 +29,12 @@ module.exports.main = function(irc_client){
             let shortDes = client.title;
             if (client.author) shortDes += ' by ' + client.author;
             if (client.description) shortDes += ' ' + client.description.substr(0,100) + '...';
-            irc_client.say(to, shortDes + ' - ' + u + ' [otr]');
+            irc_client.notice(to, shortDes + ' - ' + u + ' [otr]');
           });
 
           client.on("error", function(err){
             console.log('error: ', err)
-            irc_client.say(to, err);
+            irc_client.notice(to, err);
           });
           client.fetch();
         }
