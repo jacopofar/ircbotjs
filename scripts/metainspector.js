@@ -14,7 +14,7 @@ module.exports.main = function(irc_client){
         return;
       }
       for(let u of urls){
-        if (u.match(/.(jpg|png)$/i) !== null){
+        if (u.match(/.(jpg|png|gifv|mp3|mp4)$/i) !== null){
           console.log('skipping the image URL ' + u);
           continue;
         }
