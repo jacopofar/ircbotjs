@@ -29,7 +29,7 @@ module.exports.main = function(irc_client){
             let shortDes = client.title;
             if (client.author) shortDes += ' by ' + client.author;
             if (client.description) shortDes += ' ' + client.description.substr(0,100) + '...';
-            irc_client.notice(to, shortDes + ' - ' + u + ' [otr]');
+            irc_client.notice(to, shortDes + ' - ' + u );
           });
 
           client.on("error", function(err){
